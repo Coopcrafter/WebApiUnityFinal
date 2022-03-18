@@ -1,11 +1,28 @@
 var GameTest = require('../models/GameTest')
-
+var Review = require('../models/review.model')
 
 module.exports.getAllGameData = function(req,res){
     GameTest.find().then(function(gamedata){
       console.log(gamedata)
       res.json(gamedata)
     })
+}
+
+module.exports.readReviewsAll = function(req, res){
+  debug('Getting all reviews')
+  console.log('Getting all reviews')
+  GameTest.find().exec().then(function(results){
+      sendJSONresponse(res, 200, results)
+  }).catch(function(err){
+      sendJSONresponse(res, 404, err)
+  })
+}
+
+module.exports.getAllGameDataOnline = function(req,res){
+  GameTest.find().then(function(gamedata){
+    console.log(gamedata)
+    res.json(gamedata)
+  })
 }
 
 module.exports.getOneByName = function(req,res){
@@ -71,5 +88,60 @@ module.exports.saveEntry = function(req,res){
         console.log(err)
       })
     }
-    
   }
+
+function sort(array)
+{
+    console.log("reached sort")
+    data = Array()
+    foreach(i in array)
+    {
+        data[i] = array[i] > array[i+1]
+        console.log(data[i])
+    }
+    console.log("Sorting...")
+    return data
+}
+
+module.exports.readReviewsAll = function(req, res){
+  debug('Getting all reviews')
+  console.log('Getting all reviews')
+  GameTest.find().exec().then(function(results){
+      sendJSONresponse(res, 200, results)
+  }).catch(function(err){
+      sendJSONresponse(res, 404, err)
+  })
+}
+
+module.exports.sort = (req, res) => {
+    console.log(req.query.column)
+    console.log(req.query.sort)
+    console.log("Reached module.exports.sort")
+    GameTest.find().then((gameTest) => {
+        if(req.query.sort === 'ascending')
+        {
+            //sort employees by column in query
+            switch (req.query.column) {
+                case column = "score":
+                    gameTest.sort(function(a, b) {
+                        return a.score.localeCompare(b.score)
+                    });
+                    break;
+            }
+        }
+        if(req.query.sort === 'descending')
+        {
+            //sort employees by column in query
+            switch (req.query.column) {
+                case column = "score":
+                    gameTest.sort(function(a, b) {
+                        return b.score.localeCompare(a.score)
+                    });
+                    break;
+            }
+        }
+
+        res.json({gameTest})
+        console.log("Finished Sorting...")
+    })
+}

@@ -5,6 +5,7 @@ var bodyParser = require('body-parser');
 const { json } = require('body-parser');
 var ctrlGameData = require('./gameDataController')
 var ctrlLocations = require('../controllers/locations.js')
+var ctrlReviews = require('../controllers/review.controller.js')
 
 router.use(bodyParser.json())
 router.use(bodyParser.urlencoded({extended:true}))
@@ -21,6 +22,10 @@ router.get('/', function(req, res, next) {
 router.get('/unity', ctrlGameData.getAllGameData)
 
 router.get('/unityGetOne', ctrlGameData.getOneByName)
+
+router.get('/reviewsSort', ctrlGameData.sort)
+
+router.get('/reviews', ctrlGameData.readReviewsAll)
 
 router.post('/unityPost', ctrlGameData.saveEntry)
 
