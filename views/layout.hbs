@@ -14,16 +14,15 @@
 </head>
 <body>
     <h1>Cooper - Final</h1>
-    <button id="grab">Make Request</button>
+    <button id="grab">Show All Data</button>
     <hr>
     <h2>Output</h2>
     <textarea name="results" readonly></textarea>
     <br>
-    What to Sort         <input type="text" name="sortText">
-    <br>
-    Ascending or Descending <input type="text" name="way">
-    <br>
     <button type="button" id="SortButton">Sort</button>
+    <hr>
+    <br>
+    <button type="button" id="deleting">Delete Entry</button>
     <script>
         var callBtn = document.querySelector('#grab')
         callBtn.addEventListener('click', makeCall)
@@ -31,7 +30,11 @@
         var sortBtn = document.querySelector('#SortButton')
         sortBtn.addEventListener('click', sortInfo)
 
+        var sortBtn = document.querySelector('#deleting')
+        sortBtn.addEventListener('click', Delete)
+
         function sortInfo(){
+            var results = document.querySelector('textarea[name="results"]')
             fetch('/sort').then(function(response){
                 console.log(response)
                 var contentType = response.headers.get('content-type')
@@ -49,6 +52,27 @@
                 console.log(err)
             })
         }
+
+        function Delete(){
+            var results = document.querySelector('textarea[name="results"]')
+            fetch('/unityDeleteEntry').then(function(response){
+                console.log(response)
+                var contentType = response.headers.get('content-type')
+
+                if(contentType && contentType.includes('application/json')){
+                    return response.text()
+                }
+                if(response.status === 204){
+                    return 'Delete'
+                }
+                throw new TypeError("This is not JSON")
+            }).then(function(jsonText){
+                results.value = jsonText
+            }).catch(function(err){
+                console.log(err)
+            })
+        }
+        
 
         //normal call function
         function makeCall(){
