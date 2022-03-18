@@ -90,7 +90,7 @@ module.exports.saveEntry = function(req,res){
     }
   }
 
-function sort(array)
+function sorting(array)
 {
     console.log("reached sort")
     data = Array()
@@ -103,16 +103,6 @@ function sort(array)
     return data
 }
 
-module.exports.readReviewsAll = function(req, res){
-  debug('Getting all reviews')
-  console.log('Getting all reviews')
-  GameTest.find().exec().then(function(results){
-      sendJSONresponse(res, 200, results)
-  }).catch(function(err){
-      sendJSONresponse(res, 404, err)
-  })
-}
-
 module.exports.sort = (req, res) => {
     console.log(req.query.column)
     console.log(req.query.sort)
@@ -123,7 +113,7 @@ module.exports.sort = (req, res) => {
             //sort employees by column in query
             switch (req.query.column) {
                 case column = "score":
-                    gameTest.sort(function(a, b) {
+                    gameTest.sorting(function(a, b) {
                         return a.score.localeCompare(b.score)
                     });
                     break;
@@ -134,7 +124,7 @@ module.exports.sort = (req, res) => {
             //sort employees by column in query
             switch (req.query.column) {
                 case column = "score":
-                    gameTest.sort(function(a, b) {
+                    gameTest.sorting(function(a, b) {
                         return b.score.localeCompare(a.score)
                     });
                     break;
